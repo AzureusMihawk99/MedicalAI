@@ -11,7 +11,8 @@ export async function adminMiddleware(request: NextRequest) {
 
         // For now, we'll check if the email contains admin
         // Later this will check the database role
-        const isAdmin = sessionClaims.email.includes('admin') || sessionClaims.email.includes('@admin')
+        const email = sessionClaims.email as string
+        const isAdmin = email?.includes('admin') || email?.includes('@admin')
         
         if (!isAdmin) {
             return NextResponse.redirect(new URL('/dashboard', request.url))
