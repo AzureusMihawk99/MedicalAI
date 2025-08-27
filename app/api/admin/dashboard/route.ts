@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/config/db'
 import { usersTable, userSubscriptionsTable, transactionsTable, SessionChatTable } from '@/config/schema'
 import { requireAdminAuth } from '@/lib/admin-auth-custom'
-import { eq, count, sum, desc, gte, and } from 'drizzle-orm'
+import { eq, count, sum, desc, gte, lte, and } from 'drizzle-orm'
 
 export async function GET() {
     try {
@@ -91,7 +91,7 @@ export async function GET() {
             .where(
                 and(
                     gte(usersTable.createdAt, previousMonth),
-                    gte(endOfPreviousMonth, usersTable.createdAt)
+                    lte(usersTable.createdAt, endOfPreviousMonth)
                 )
             )
         
@@ -102,7 +102,7 @@ export async function GET() {
                 and(
                     eq(transactionsTable.status, 'completed'),
                     gte(transactionsTable.createdAt, previousMonth),
-                    gte(endOfPreviousMonth, transactionsTable.createdAt)
+                    lte(transactionsTable.createdAt, endOfPreviousMonth)
                 )
             )
         
