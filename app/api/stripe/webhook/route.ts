@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
                             // Create transaction record
                             await db.insert(transactionsTable).values({
                                 userId: user.id,
-                                amount: (stripeSubscription.items.data[0]?.price.unit_amount || 0) / 100,
+                                amount: ((stripeSubscription.items.data[0]?.price.unit_amount || 0) / 100).toString(),
                                 currency: stripeSubscription.items.data[0]?.price.currency || 'usd',
                                 status: 'completed',
                                 description: `Subscription to ${plan.name}`,
@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
                                 await db.insert(transactionsTable).values({
                                     userId: users[0].id,
                                     subscriptionId: subscription.id,
-                                    amount: (invoice.amount_paid || 0) / 100,
+                                    amount: ((invoice.amount_paid || 0) / 100).toString(),
                                     currency: invoice.currency || 'usd',
                                     status: 'completed',
                                     description: `${plan.name} renewal`,
@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
                         await db.insert(transactionsTable).values({
                             userId: subscriptions[0].userId!,
                             subscriptionId: subscriptions[0].id,
-                            amount: (invoice.amount_due || 0) / 100,
+                            amount: ((invoice.amount_due || 0) / 100).toString(),
                             currency: invoice.currency || 'usd',
                             status: 'failed',
                             description: 'Payment failed',
