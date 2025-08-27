@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
                     
                     if (session.mode === 'subscription' && session.subscription) {
                         // Get subscription details from Stripe
-                        const stripeSubscription = await stripe.subscriptions.retrieve(session.subscription as string)
+                        const stripeSubscription = await stripe.subscriptions.retrieve(session.subscription as string) as any
                         const priceId = stripeSubscription.items.data[0]?.price.id
                         
                         // Find the plan by stripe price ID
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
             }
 
             case 'customer.subscription.updated': {
-                const subscription = event.data.object
+                const subscription = event.data.object as any
                 console.log('Subscription updated:', subscription.id)
                 
                 // Update subscription record
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
             }
 
             case 'customer.subscription.deleted': {
-                const subscription = event.data.object
+                const subscription = event.data.object as any
                 console.log('Subscription deleted:', subscription.id)
                 
                 // Update subscription status
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
             }
 
             case 'invoice.payment_succeeded': {
-                const invoice = event.data.object
+                const invoice = event.data.object as any
                 console.log('Invoice payment succeeded:', invoice.id)
                 
                 // This handles recurring subscription renewals
@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
             }
 
             case 'invoice.payment_failed': {
-                const invoice = event.data.object
+                const invoice = event.data.object as any
                 console.log('Invoice payment failed:', invoice.id)
                 
                 if (invoice.subscription) {
