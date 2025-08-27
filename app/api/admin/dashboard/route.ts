@@ -140,7 +140,8 @@ export async function GET() {
                 timestamp: transaction.createdAt,
                 color: transaction.status === 'completed' ? 'blue' : 'orange'
             }))
-        ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        ].filter(item => item.timestamp)
+        .sort((a, b) => new Date(b.timestamp!).getTime() - new Date(a.timestamp!).getTime())
         .slice(0, 10)
         
         const dashboardData = {
